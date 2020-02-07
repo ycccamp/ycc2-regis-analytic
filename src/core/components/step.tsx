@@ -36,7 +36,11 @@ const Step: React.FC<IStepProps> = props => {
 
   const [amount, setAmount] = useState<number | null | undefined>(null)
 
-  const [camper, setCamper] = useState<ICamper[]>([])
+  const [camper, setCamper] = useState<{
+    loading: boolean
+    error: boolean
+    data: ICamper[]
+  }>({ loading: true, error: false, data: [] })
 
   const stepRef = instance
     .firestore()
@@ -72,7 +76,11 @@ const Step: React.FC<IStepProps> = props => {
     })
 
     await Promise.all(res).then(res => {
-      setCamper(res.filter(o => o !== undefined))
+      setCamper(prev => ({
+        ...prev,
+        loading: false,
+        data: res.filter(o => o !== undefined),
+      }))
     })
   }
 
@@ -84,7 +92,7 @@ const Step: React.FC<IStepProps> = props => {
   }, [])
 
   useEffect(() => {
-    if (stepOpen && camper.length === 0) {
+    if (stepOpen && camper.data.length === 0) {
       fetchCampers()
     }
   }, [stepOpen])
@@ -103,7 +111,11 @@ const Step: React.FC<IStepProps> = props => {
         </Heading>
       </Flex>
       <Collapse isOpen={stepOpen} py={2}>
-        {camper.length}
+        {camper.error
+          ? '!ERR'
+          : camper.loading
+          ? 'Loading...'
+          : JSON.stringify(camper.data)}
       </Collapse>
     </Box>
   )
