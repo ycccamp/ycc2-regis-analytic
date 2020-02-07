@@ -26,7 +26,7 @@ const IndexPage: NextPage = props => {
             <Box pr={4} display={['none', 'block']}>
               <Text textAlign='right'>{user.email}</Text>
               <Text textAlign='right' fontSize='sm' color='gray.500'>
-                {user.uid}
+                {user.displayName}
               </Text>
             </Box>
           ) : null}
