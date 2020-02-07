@@ -101,8 +101,8 @@ const IndexPage: NextPage = props => {
           </Flex>
         </Box>
         <Track track='developer' title='Developer' />
-        {/* <Track track='designer' title='Designer' />
-        <Track track='creative' title='Creative' /> */}
+        <Track track='designer' title='Designer' />
+        <Track track='creative' title='Creative' />
       </Box>
     </Flex>
   )

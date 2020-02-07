@@ -26,7 +26,7 @@ const Track: React.FC<ITrackProps> = props => {
 
   const instance = firebase()
 
-  const [trackOpen, setTrackOpen] = useState<boolean>(true)
+  const [trackOpen, setTrackOpen] = useState<boolean>(false)
 
   const [overview, setOverview] = useState<{
     total: IStat
