@@ -125,7 +125,7 @@ const Track: React.FC<ITrackProps> = props => {
           <Heading size='md' pb={2}>
             Leftover steps
           </Heading>
-          {[1, 2, 3, 4, 5].map(step => (
+          {[1, 2, 3, 4].map(step => (
             <Step
               key={`analytic-${track}-step-${step}`}
               track={track}

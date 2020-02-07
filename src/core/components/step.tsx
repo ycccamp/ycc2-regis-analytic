@@ -33,6 +33,7 @@ const Step: React.FC<IStepProps> = props => {
   const stepRef = instance
     .firestore()
     .collection('registration')
+    .where('isLocked', '==', false)
     .where('track', '==', track)
     .where('step', '==', step)
 
