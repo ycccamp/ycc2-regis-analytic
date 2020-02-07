@@ -22,6 +22,11 @@ class NextApp extends App {
       <React.Fragment>
         <Head>
           <title>Young Creator's Camp</title>
+          <link rel='shortcut icon' href='/static/favicon-2020.ico' />
+          <link
+            rel='apple-touch-icon-precomposed'
+            href='/static/favicon-2020.ico'
+          />
         </Head>
         <AppShell>
           <Component {...pageProps} />
