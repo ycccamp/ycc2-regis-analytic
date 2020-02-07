@@ -12,15 +12,19 @@ import {
   StatHelpText,
   StatLabel,
   StatNumber,
+  Text,
 } from '@chakra-ui/core'
 
 import Track from '../core/components/track'
 
 import 'firebase/firestore'
 import { firebase } from '../core/services/firebase'
+import { useAuth } from '../core/services/useAuth'
 
 const IndexPage: NextPage = props => {
   const instance = firebase()
+
+  const user = useAuth()
 
   const [overview, setOverview] = useState<{
     total: number | null | undefined
@@ -59,6 +63,14 @@ const IndexPage: NextPage = props => {
         <Flex align='center'>
           <Heading size='xl'>Analytics</Heading>
           <Box mx='auto' />
+          {user !== null ? (
+            <Box pr={4} display={['none', 'block']}>
+              <Text textAlign='right'>{user.email}</Text>
+              <Text textAlign='right' fontSize='sm' color='gray.500'>
+                {user.uid}
+              </Text>
+            </Box>
+          ) : null}
           <Button onClick={() => instance.auth().signOut()}>Logout</Button>
         </Flex>
         <Box py={4}>
