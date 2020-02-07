@@ -1,43 +1,47 @@
 import React, { useEffect, useState } from 'react'
 
-import { NextPage } from 'next'
+import 'firebase/firestore'
+import { firebase } from '../services/firebase'
 
 import {
   Box,
+  Collapse,
   Flex,
   Heading,
   Icon,
-  Spinner,
   Stat,
-  StatArrow,
-  StatGroup,
   StatHelpText,
   StatLabel,
   StatNumber,
-  Text,
 } from '@chakra-ui/core'
 
-import Track from '../core/components/track'
+import Step from './step'
 
-import 'firebase/firestore'
-import { firebase } from '../core/services/firebase'
+import { ITrackProps } from '../@types/ITrackProps'
 
-import { getStat } from '../core/services/getStat'
+type IStat = number | null | undefined
 
-const IndexPage: NextPage = props => {
+const Track: React.FC<ITrackProps> = props => {
+  const { track, title } = props
+
   const instance = firebase()
 
+  const [trackOpen, setTrackOpen] = useState<boolean>(true)
+
   const [overview, setOverview] = useState<{
-    total: number | null | undefined
-    locked: number | null | undefined
+    total: IStat
+    locked: IStat
   }>({
     total: null,
     locked: null,
   })
 
-  const fetchOverview = async () => {
-    const trackRef = instance.firestore().collection('registration')
+  const trackRef = instance
+    .firestore()
+    .collection('registration')
+    .where('track', '==', track)
 
+  const fetchOverview = async () => {
     trackRef
       .get()
       .then(totalSnapshot => {
@@ -55,16 +59,32 @@ const IndexPage: NextPage = props => {
   }
 
   useEffect(() => {
-    fetchOverview()
-  }, [])
+    if (
+      trackOpen &&
+      (typeof overview.total !== 'number' ||
+        typeof overview.locked !== 'number')
+    ) {
+      fetchOverview()
+    }
+  }, [trackOpen])
 
   return (
-    <Flex justify='center' pt={8}>
-      <Box width={[22 / 24, 18 / 24, 16 / 24, 12 / 24]}>
-        <Heading size='xl'>Analytics</Heading>
+    <Box py={4}>
+      <Flex
+        align='center'
+        cursor='pointer'
+        onClick={() => setTrackOpen(o => !o)}>
+        <Icon size='28px' name={trackOpen ? 'chevron-down' : 'chevron-right'} />
+        <Heading size='lg' pl={2}>
+          Track: {title}
+        </Heading>
+      </Flex>
+      <Collapse isOpen={trackOpen} py={2}>
         <Box py={4}>
-          <Heading size='md'>Overview</Heading>
-          <Flex pt={2}>
+          <Heading size='md' pb={2}>
+            Overview
+          </Heading>
+          <Flex>
             <Stat>
               <StatLabel>Total</StatLabel>
               <StatNumber>
@@ -100,12 +120,21 @@ const IndexPage: NextPage = props => {
             </Stat>
           </Flex>
         </Box>
-        <Track track='developer' title='Developer' />
-        {/* <Track track='designer' title='Designer' />
-        <Track track='creative' title='Creative' /> */}
-      </Box>
-    </Flex>
+        <Box py={4}>
+          <Heading size='md' pb={2}>
+            Leftover steps
+          </Heading>
+          {[1, 2, 3, 4, 5].map(step => (
+            <Step
+              key={`analytic-${track}-step-${step}`}
+              track={track}
+              step={step}
+            />
+          ))}
+        </Box>
+      </Collapse>
+    </Box>
   )
 }
 
-export default IndexPage
+export default Track
