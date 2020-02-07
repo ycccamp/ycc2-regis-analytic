@@ -16,7 +16,7 @@ interface ICamper {
 }
 
 const Step: React.FC<IStepProps> = props => {
-  const { step, track } = props
+  const { step, title, track } = props
 
   const instance = firebase()
 
@@ -94,7 +94,7 @@ const Step: React.FC<IStepProps> = props => {
         onClick={() => setStepOpen(o => !o)}>
         <Icon name={stepOpen ? 'chevron-down' : 'chevron-right'} />
         <Heading size='sm' pl={2}>
-          Step {step} (
+          Step {step}: {title} (
           {amount === null ? '--' : amount === undefined ? '!ERR' : amount}{' '}
           people)
         </Heading>

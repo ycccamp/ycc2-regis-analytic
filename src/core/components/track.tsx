@@ -59,6 +59,14 @@ const Track: React.FC<ITrackProps> = props => {
       .catch(() => setOverview(o => ({ ...o, locked: undefined })))
   }
 
+  const step = {
+    '1': 'Personal information',
+    '2': 'Parent information',
+    '3': 'General question',
+    '4': 'Track question',
+    '5': 'Verify',
+  }
+
   useEffect(() => {
     if (
       trackOpen &&
@@ -125,11 +133,12 @@ const Track: React.FC<ITrackProps> = props => {
           <Heading size='md' pb={2}>
             Leftover steps
           </Heading>
-          {[1, 2, 3, 4].map(step => (
+          {Object.entries(step).map(([step, title]) => (
             <Step
               key={`analytic-${track}-step-${step}`}
+              title={title}
               track={track}
-              step={step}
+              step={Number(step)}
             />
           ))}
         </Box>
