@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import Router from 'next/router'
 
-import { Button, Flex, Spinner, Text } from '@chakra-ui/core'
+import { Box, Button, Flex, Spinner, Text } from '@chakra-ui/core'
 
 import { auth } from 'firebase/app'
 import 'firebase/auth'
@@ -17,11 +17,10 @@ const AuthComponent: React.FC<IAuthProps> = props => {
 
   const [isLoginButtonLoad, setIsLoginButtonLoad] = useState<boolean>(false)
 
-  const loginHandler = () => {
+  const loginHandler = (provider: auth.AuthProvider) => {
     setIsLoginButtonLoad(true)
 
     const instance = firebase()
-    const provider = new auth.GoogleAuthProvider()
 
     instance
       .auth()
@@ -66,9 +65,15 @@ const AuthComponent: React.FC<IAuthProps> = props => {
           </Text>
           <Button
             isLoading={isLoginButtonLoad}
-            onClick={loginHandler}
-            variantColor='blue'>
+            onClick={() => loginHandler(new auth.GoogleAuthProvider())}>
             Sign-in with Google
+          </Button>
+          <Box width='100%' py={2} />
+          <Button
+            isLoading={isLoginButtonLoad}
+            onClick={() => loginHandler(new auth.FacebookAuthProvider())}
+            variantColor='facebook'>
+            Sign-in with Facebook
           </Button>
         </Flex>
       ) : (

@@ -10,6 +10,7 @@ import {
   Heading,
   Icon,
   Stat,
+  StatGroup,
   StatHelpText,
   StatLabel,
   StatNumber,
@@ -84,7 +85,7 @@ const Track: React.FC<ITrackProps> = props => {
           <Heading size='md' pb={2}>
             Overview
           </Heading>
-          <Flex>
+          <StatGroup>
             <Stat>
               <StatLabel>Total</StatLabel>
               <StatNumber>
@@ -118,7 +119,7 @@ const Track: React.FC<ITrackProps> = props => {
               </StatNumber>
               <StatHelpText>people</StatHelpText>
             </Stat>
-          </Flex>
+          </StatGroup>
         </Box>
         <Box py={4}>
           <Heading size='md' pb={2}>

@@ -4,25 +4,20 @@ import { NextPage } from 'next'
 
 import {
   Box,
+  Button,
   Flex,
   Heading,
-  Icon,
-  Spinner,
   Stat,
-  StatArrow,
   StatGroup,
   StatHelpText,
   StatLabel,
   StatNumber,
-  Text,
 } from '@chakra-ui/core'
 
 import Track from '../core/components/track'
 
 import 'firebase/firestore'
 import { firebase } from '../core/services/firebase'
-
-import { getStat } from '../core/services/getStat'
 
 const IndexPage: NextPage = props => {
   const instance = firebase()
@@ -61,10 +56,14 @@ const IndexPage: NextPage = props => {
   return (
     <Flex justify='center' pt={8}>
       <Box width={[22 / 24, 18 / 24, 16 / 24, 12 / 24]}>
-        <Heading size='xl'>Analytics</Heading>
+        <Flex align='center'>
+          <Heading size='xl'>Analytics</Heading>
+          <Box mx='auto' />
+          <Button onClick={() => instance.auth().signOut()}>Logout</Button>
+        </Flex>
         <Box py={4}>
           <Heading size='md'>Overview</Heading>
-          <Flex pt={2}>
+          <StatGroup pt={2}>
             <Stat>
               <StatLabel>Total</StatLabel>
               <StatNumber>
@@ -98,7 +97,7 @@ const IndexPage: NextPage = props => {
               </StatNumber>
               <StatHelpText>people</StatHelpText>
             </Stat>
-          </Flex>
+          </StatGroup>
         </Box>
         <Track track='developer' title='Developer' />
         <Track track='designer' title='Designer' />

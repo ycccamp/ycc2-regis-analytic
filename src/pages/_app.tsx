@@ -3,8 +3,6 @@ import React from 'react'
 import App from 'next/app'
 import Head from 'next/head'
 
-import { CSSReset, ThemeProvider } from '@chakra-ui/core'
-
 import 'firebase/analytics'
 import { firebase } from '../core/services/firebase'
 
