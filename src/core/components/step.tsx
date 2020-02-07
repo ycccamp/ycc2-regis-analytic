@@ -1,21 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { useTable } from 'react-table'
-
 import 'firebase/firestore'
 import { firebase } from '../services/firebase'
 
-import {
-  Box,
-  Collapse,
-  Flex,
-  Heading,
-  Icon,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
-} from '@chakra-ui/core'
+import { Box, Collapse, Flex, Heading, Icon } from '@chakra-ui/core'
 
 import { IStepProps } from '../@types/IStepProps'
 
@@ -111,11 +99,44 @@ const Step: React.FC<IStepProps> = props => {
         </Heading>
       </Flex>
       <Collapse isOpen={stepOpen} py={2}>
-        {camper.error
-          ? '!ERR'
-          : camper.loading
-          ? 'Loading...'
-          : JSON.stringify(camper.data)}
+        {camper.error ? (
+          '!ERR'
+        ) : camper.loading ? (
+          'Loading...'
+        ) : (
+          <Flex justify='center' width='100%'>
+            <Box width={['100%', 3 / 4, 2 / 3]}>
+              <table style={{ width: '100%' }}>
+                <thead>
+                  <tr>
+                    <th style={{ borderBottom: '1px solid #ddd' }}>Name</th>
+                    <th style={{ borderBottom: '1px solid #ddd' }}>Phone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {camper.data.map((person, i) => (
+                    <tr key={`table-${track}-${step}-${i}`}>
+                      <td
+                        style={{
+                          borderBottom: '1px solid #ddd',
+                          textAlign: 'center',
+                        }}>
+                        {person.name.th}
+                      </td>
+                      <td
+                        style={{
+                          borderBottom: '1px solid #ddd',
+                          textAlign: 'center',
+                        }}>
+                        {person.phone}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Box>
+          </Flex>
+        )}
       </Collapse>
     </Box>
   )
