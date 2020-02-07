@@ -29,9 +29,6 @@ jobs:
     - name: "Init: Install dependencies"
       run: |
         yarn install
-        cd ./functions
-        yarn install
-        cd ..
     - name: "Test: Type checking"
       run: |
         yarn test:types
