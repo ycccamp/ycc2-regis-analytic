@@ -7,7 +7,6 @@ import { Box, Button, Flex, Heading, Text } from '@chakra-ui/core'
 import Overview from '../core/components/overview'
 import Track from '../core/components/track'
 
-import 'firebase/firestore'
 import { firebase } from '../core/services/firebase'
 import { useAuth } from '../core/services/useAuth'
 

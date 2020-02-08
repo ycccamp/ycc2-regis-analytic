@@ -13,6 +13,8 @@ import { IAuthProps } from '../@types/IAuthProps'
 const AuthComponent: React.FC<IAuthProps> = props => {
   const { user } = props
 
+  const instance = firebase()
+
   const [stage, setStage] = useState<number>(0)
 
   const [isLoginButtonLoad, setIsLoginButtonLoad] = useState<boolean>(false)
@@ -20,11 +22,9 @@ const AuthComponent: React.FC<IAuthProps> = props => {
   const loginHandler = (provider: auth.AuthProvider) => {
     setIsLoginButtonLoad(true)
 
-    const instance = firebase()
-
     instance
       .auth()
-      .signInWithPopup(provider)
+      .signInWithRedirect(provider)
       .catch(e => {
         if (e === 'auth/popup-closed-by-user') {
           // TODO: Handle auth error
@@ -38,6 +38,8 @@ const AuthComponent: React.FC<IAuthProps> = props => {
   }
 
   useEffect(() => {
+    instance.auth().getRedirectResult()
+
     if (user === null) {
       setStage(1)
     } else {
