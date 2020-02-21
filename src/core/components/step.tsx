@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 
+import { useLocalStorage } from 'web-api-hooks'
+
 import 'firebase/firestore'
 import { firebase } from '../services/firebase'
 
-import { Box, Collapse, Flex, Heading, Icon } from '@chakra-ui/core'
+import { Box, Checkbox, Collapse, Flex, Heading, Icon } from '@chakra-ui/core'
 
 import { IStepProps } from '../@types/IStepProps'
 
 interface ICamper {
+  id: string
   name: {
     th: string
     en: string
@@ -24,6 +27,8 @@ const Step: React.FC<IStepProps> = props => {
   const [stepOpen, setStepOpen] = useState<boolean>(false)
 
   const [amount, setAmount] = useState<number | null | undefined>(null)
+
+  const [checked, setChecked] = useLocalStorage<string[]>('checked', [])
 
   const [camper, setCamper] = useState<{
     loading: boolean
@@ -56,6 +61,7 @@ const Step: React.FC<IStepProps> = props => {
         return undefined
       } else {
         return {
+          id: doc.id,
           name: {
             th: `${data.firstname} ${data.lastname}`,
             en: `${data.firstnameEn} ${data.lastnameEn}`,
@@ -73,6 +79,14 @@ const Step: React.FC<IStepProps> = props => {
         data: res.filter(o => o !== undefined),
       }))
     })
+  }
+
+  const handleCheck = (id: string) => {
+    if (checked.includes(id)) {
+      setChecked(prev => prev.filter(o => o !== id))
+    } else {
+      setChecked(prev => [...prev, id])
+    }
   }
 
   useEffect(() => {
@@ -115,6 +129,7 @@ const Step: React.FC<IStepProps> = props => {
                     <th style={{ borderBottom: '1px solid #ddd' }}>Name</th>
                     <th style={{ borderBottom: '1px solid #ddd' }}>Nickname</th>
                     <th style={{ borderBottom: '1px solid #ddd' }}>Phone</th>
+                    <th style={{ borderBottom: '1px solid #ddd' }}>isCalled</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -140,6 +155,18 @@ const Step: React.FC<IStepProps> = props => {
                           textAlign: 'center',
                         }}>
                         {person.phone}
+                      </td>
+                      <td
+                        style={{
+                          borderBottom: '1px solid #ddd',
+                          textAlign: 'center',
+                        }}>
+                        <Flex align='center' justify='center'>
+                          <Checkbox
+                            isChecked={checked.includes(person.id)}
+                            onChange={() => handleCheck(person.id)}
+                          />
+                        </Flex>
                       </td>
                     </tr>
                   ))}
