@@ -12,6 +12,7 @@ interface ICamper {
     th: string
     en: string
   }
+  nickname: string
   phone: string
 }
 
@@ -59,6 +60,7 @@ const Step: React.FC<IStepProps> = props => {
             th: `${data.firstname} ${data.lastname}`,
             en: `${data.firstnameEn} ${data.lastnameEn}`,
           },
+          nickname: `${data.nickname}`,
           phone: `${data.phone}`,
         }
       }
@@ -111,6 +113,7 @@ const Step: React.FC<IStepProps> = props => {
                 <thead>
                   <tr>
                     <th style={{ borderBottom: '1px solid #ddd' }}>Name</th>
+                    <th style={{ borderBottom: '1px solid #ddd' }}>Nickname</th>
                     <th style={{ borderBottom: '1px solid #ddd' }}>Phone</th>
                   </tr>
                 </thead>
@@ -123,6 +126,13 @@ const Step: React.FC<IStepProps> = props => {
                           textAlign: 'center',
                         }}>
                         {person.name.th}
+                      </td>
+                      <td
+                        style={{
+                          borderBottom: '1px solid #ddd',
+                          textAlign: 'center',
+                        }}>
+                        {person.nickname}
                       </td>
                       <td
                         style={{
